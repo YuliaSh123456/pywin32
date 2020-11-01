@@ -15,7 +15,6 @@ def build_parser():
 
 
 def find_it(hwnd, parser):
-    ttl = win32gui.GetWindowText(hwnd)
     if parser.win_name in win32gui.GetWindowText(hwnd):
         win32gui.SetWindowText(hwnd, parser.new_title)
 
