@@ -15,8 +15,7 @@ def build_parser():
 
 
 def find_it(hwnd, parser):
-    ttl = win32gui.GetWindowText(hwnd)
-    t, p = win32process.GetWindowThreadProcessId(hwnd)
+    _, p = win32process.GetWindowThreadProcessId(hwnd)
 
     if parser.pid == p:
         win32gui.SetWindowText(hwnd, parser.new_title)
