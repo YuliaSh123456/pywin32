@@ -6,7 +6,7 @@ import argparse
 
 def build_parser():
     parser = argparse.ArgumentParser(description='This is a title changer')
-    parser.add_argument('pid', action="store", type=int)
+    parser.add_argument('win_name', action="store", type=str)
     parser.add_argument('new_title', action="store", type=str)
 
     parse_results = parser.parse_args()
@@ -15,11 +15,9 @@ def build_parser():
 
 
 def find_it(hwnd, parser):
-    _, p = win32process.GetWindowThreadProcessId(hwnd)
-
-    if parser.pid == p:
+    ttl = win32gui.GetWindowText(hwnd)
+    if parser.win_name in win32gui.GetWindowText(hwnd):
         win32gui.SetWindowText(hwnd, parser.new_title)
-
 
 def main():
     parser = build_parser()
