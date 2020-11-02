@@ -5,8 +5,8 @@ import win32process
 import win32gui
 import argparse
 
+import win32security
 
-# pid = None
 
 def build_parser():
     parser = argparse.ArgumentParser(description='This is a title changer')
@@ -18,20 +18,23 @@ def build_parser():
     return parse_results
 
 
-def enum_handler(hwnd, list_of_params):
+def enum_handler(hwnd, parser):
     _, p = win32process.GetWindowThreadProcessId(hwnd)
-    if p is not None and p == list_of_params[0]:
-        win32gui.SetWindowText(hwnd, list_of_params[1])
+
+    try:
+        handle = win32api.OpenProcess(win32con.PROCESS_QUERY_INFORMATION | win32con.PROCESS_VM_READ, False, p)
+        proc_name = win32process.GetModuleFileNameEx(handle, 0)
+    finally:
+        print "failed to access process"
+
+    if parser.proc_name in proc_name:
+        win32gui.SetWindowText(hwnd, parser.new_title)
 
 
 def main():
     parser = build_parser()
 
-    for proc in psutil.process_iter():
-        if parser.proc_name in proc.name():
-            pid = proc.pid
-
-    win32gui.EnumWindows(enum_handler, [pid, parser.new_title])
+    win32gui.EnumWindows(enum_handler, parser)
 
 
 if __name__ == "__main__":
