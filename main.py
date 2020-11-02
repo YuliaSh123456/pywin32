@@ -18,10 +18,10 @@ def build_parser():
     return parse_results
 
 
-def enum_handler(hwnd, ll):
+def enum_handler(hwnd, list_of_params):
     _, p = win32process.GetWindowThreadProcessId(hwnd)
-    if p is not None and p == ll[0]:
-        win32gui.SetWindowText(hwnd, ll[1])
+    if p is not None and p == list_of_params[0]:
+        win32gui.SetWindowText(hwnd, list_of_params[1])
 
 
 def main():
