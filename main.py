@@ -1,11 +1,9 @@
-import psutil
 import win32api
 import win32con
 import win32process
 import win32gui
 import argparse
 
-import win32security
 
 
 def build_parser():
@@ -24,8 +22,8 @@ def enum_handler(hwnd, parser):
     try:
         handle = win32api.OpenProcess(win32con.PROCESS_QUERY_INFORMATION | win32con.PROCESS_VM_READ, False, p)
         proc_name = win32process.GetModuleFileNameEx(handle, 0)
-    finally:
-        print "failed to access process"
+    except Exception as ex:
+        print ex
 
     if parser.proc_name in proc_name:
         win32gui.SetWindowText(hwnd, parser.new_title)
