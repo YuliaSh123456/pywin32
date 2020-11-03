@@ -1,3 +1,4 @@
+import pywintypes
 import win32api
 import win32con
 import win32process
@@ -22,8 +23,9 @@ def enum_handler(hwnd, parser):
     try:
         handle = win32api.OpenProcess(win32con.PROCESS_QUERY_INFORMATION | win32con.PROCESS_VM_READ, False, p)
         proc_name = win32process.GetModuleFileNameEx(handle, 0)
-    except Exception as ex:
-        print ex
+
+    except pywintypes.error:
+        return
 
     if parser.proc_name in proc_name:
         win32gui.SetWindowText(hwnd, parser.new_title)
